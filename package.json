@@ -1,12 +1,15 @@
 {
   "name": "frontend",
   "private": true,
-  "homepage": "https://usuario.github.io/repo",
+  "homepage": "https://Fausto-Grilo.github.io/quiz-app",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.7",
