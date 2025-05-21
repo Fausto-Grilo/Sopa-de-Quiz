@@ -176,8 +176,8 @@ const WordSoup: React.FC<WordSoupProps> = ({ words, correct, onSelect }) => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto flex flex-col gap-6">
-      {notification && (
+        <div className="relative mx-auto flex flex-col w-full max-w-4xl gap-6">
+          {notification && (
         <div
           className={`p-4 rounded transition-all ${
             notification.type === 'success'

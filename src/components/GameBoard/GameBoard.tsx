@@ -24,15 +24,39 @@ interface GameBoardProps {
 const questions: Question[] = [
   {
     id: "1",
-    question: 'Qual é a capital da França?',
-    words: ['PARIS', 'LYON', 'MARSEILLE', 'TOULOUSE'],
-    correct: 'PARIS',
+    question: 'Com que arma Blimunda se defendeu do frade?',
+    words: ['ESPADA', 'ESPIGÃO', 'COLHER', 'PAU'],
+    correct: 'ESPIGÃO',
   },
   {
     id: "2",
-    question: 'Qual é a capital da Espanha?',
-    words: ['MADRID', 'BARCELONA', 'VALENCIA', 'SEVILLA'],
-    correct: 'MADRID',
+    question: 'A que ordem pertência o frade que tentou violar Blimunda?',
+    words: ['DOMINICANO', 'FRANCISCANOS', 'DIOCESANOS', 'BENEDITINOS'],
+    correct: 'DOMINICANO',
+  },
+  {
+    id: "3",
+    question: 'Quantas pessoas foram queimadas no auto de fé Baltasar?',
+    words: ['ONZE', 'DEZ', 'DOZE', 'DUAS'],
+    correct: 'ONZE',
+  },
+  {
+    id: "4",
+    question: 'Qual era o primeiro nome do judeu que foi queimado com Baltasar',
+    words: ['BARTOLOMEU', 'JOSÉ', 'ANTÓNIO', 'PEDRO'],
+    correct: 'ANTÓNIO',
+  },
+  {
+    id: "5",
+    question: 'Quantas vezes Blimunda passou por Lisboa enquanto procurava por Baltasar',
+    words: ['SEIS', 'UMA', 'TRÊS', 'DEZ'],
+    correct: 'SEIS',
+  },
+  {
+    id: "6",
+    question: 'Qual a relação de Inês Antonia com Baltasar',
+    words: ['AMIGA', 'PRIMA', 'IRMÂ', 'AMANTE'],
+    correct: 'IRMÂ',
   },
 ];
 
