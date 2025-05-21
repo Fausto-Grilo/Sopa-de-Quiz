@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "private": true,
-  "homepage": "https://Fausto-Grilo.github.io/quiz-app",
+  "homepage": "https://fausto-grilo.github.io/Sopa-de-Quiz/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
