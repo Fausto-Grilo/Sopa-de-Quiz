@@ -6,34 +6,83 @@ interface WordSoupProps {
   onSelect: (word: string) => void;
 }
 
-const GRID_SIZE = 10;
+const GRID_SIZE = 12;
 
 type Position = { row: number; col: number };
 
 const generateGrid = (words: string[]): string[][] => {
-  const grid: string[][] = Array.from({ length: GRID_SIZE }, () =>
-    Array.from({ length: GRID_SIZE }, () => '')
-  );
+    // Inicializa a grid com strings vazias
+    const grid: string[][] = Array.from({ length: GRID_SIZE }, () =>
+        Array.from({ length: GRID_SIZE }, () => '')
+    );
 
-  // Insere palavras horizontalmente em linhas diferentes
-  words.forEach((word, index) => {
-    const row = index;
-    const startCol = Math.floor(Math.random() * (GRID_SIZE - word.length));
-    for (let i = 0; i < word.length; i++) {
-      grid[row][startCol + i] = word[i].toUpperCase();
+    // Define orientações possíveis com seus respectivos deslocamentos
+    const orientations = [
+        { dx: 0, dy: 1 },   // horizontal (esquerda para direita)
+        { dx: 1, dy: 0 },   // vertical (de cima para baixo)
+        { dx: 1, dy: 1 },   // diagonal (superior esquerda para inferior direita)
+        { dx: 0, dy: -1 },  // horizontal invertida (direita para esquerda)
+        { dx: -1, dy: 0 },  // vertical invertida (de baixo para cima)
+        { dx: -1, dy: -1 }  // diagonal invertida (inferior direita para superior esquerda)
+    ];
+
+    // Insere cada palavra na grid com posição e orientação aleatórias
+    words.forEach((word) => {
+        const letters = word.toUpperCase();
+        let placed = false;
+        for (let attempt = 0; attempt < 100 && !placed; attempt++) {
+            const orientation = orientations[Math.floor(Math.random() * orientations.length)];
+            const dx = orientation.dx;
+            const dy = orientation.dy;
+
+            // Calcula os limites válidos para a linha e coluna de início com base na orientação
+            const rowStartMin = dx === -1 ? letters.length - 1 : 0;
+            const rowStartMax = dx === 1 ? GRID_SIZE - letters.length : GRID_SIZE - 1;
+            const colStartMin = dy === -1 ? letters.length - 1 : 0;
+            const colStartMax = dy === 1 ? GRID_SIZE - letters.length : GRID_SIZE - 1;
+
+            if (rowStartMax < rowStartMin || colStartMax < colStartMin) continue; // orientação inviável para a palavra
+
+            const startRow = Math.floor(Math.random() * (rowStartMax - rowStartMin + 1)) + rowStartMin;
+            const startCol = Math.floor(Math.random() * (colStartMax - colStartMin + 1)) + colStartMin;
+
+            // Verifica se é possível inserir a palavra na posição escolhida
+            let canPlace = true;
+            const positions: { row: number; col: number }[] = [];
+            for (let i = 0; i < letters.length; i++) {
+                const row = startRow + i * dx;
+                const col = startCol + i * dy;
+                if (row < 0 || row >= GRID_SIZE || col < 0 || col >= GRID_SIZE) {
+                    canPlace = false;
+                    break;
+                }
+                // Permite sobreposição apenas se as letras coincidirem
+                if (grid[row][col] !== '' && grid[row][col] !== letters[i]) {
+                    canPlace = false;
+                    break;
+                }
+                positions.push({ row, col });
+            }
+
+            if (canPlace) {
+                positions.forEach((pos, idx) => {
+                    grid[pos.row][pos.col] = letters[idx];
+                });
+                placed = true;
+            }
+        }
+    });
+
+    // Preenche os espaços vazios com letras aleatórias
+    for (let row = 0; row < GRID_SIZE; row++) {
+        for (let col = 0; col < GRID_SIZE; col++) {
+            if (!grid[row][col]) {
+                grid[row][col] = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            }
+        }
     }
-  });
 
-  // Preenche espaços vazios com letras aleatórias
-  for (let row = 0; row < GRID_SIZE; row++) {
-    for (let col = 0; col < GRID_SIZE; col++) {
-      if (!grid[row][col]) {
-        grid[row][col] = String.fromCharCode(65 + Math.floor(Math.random() * 26));
-      }
-    }
-  }
-
-  return grid;
+    return grid;
 };
 
 const WordSoup: React.FC<WordSoupProps> = ({ words, correct, onSelect }) => {
@@ -140,7 +189,7 @@ const WordSoup: React.FC<WordSoupProps> = ({ words, correct, onSelect }) => {
         </div>
       )}
 
-      <div className="grid grid-cols-10 gap-1 border rounded-xl p-4 bg-white shadow-md">
+      <div className="grid grid-cols-12 gap-2 border rounded-xl p-4 bg-white shadow-md">
         {grid.flatMap((row, rowIndex) =>
           row.map((letter, colIndex) => {
             const isSelected = selectedPositions.some(
